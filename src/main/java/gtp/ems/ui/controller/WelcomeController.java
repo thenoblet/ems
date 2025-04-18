@@ -14,8 +14,6 @@ public class WelcomeController {
     @FXML private ProgressIndicator progressIndicator;
     @FXML private Label statusLabel;
 
-
-
     @FXML
     public void initialize() {
         // Simulate loading process

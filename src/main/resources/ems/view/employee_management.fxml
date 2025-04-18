@@ -4,6 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import org.controlsfx.property.editor.AbstractObjectField?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="gtp.ems.ui.controller.EmployeeManagementController">
     <top>
@@ -38,13 +41,14 @@
                         </ComboBox>
 
                         <Label text="Sort By:"/>
-                        <ComboBox fx:id="sortComboBox" promptText="Select sort option">
+                        <ComboBox fx:id="sortComboBox" promptText="Select Sort Option">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="Default"/>
                                     <String fx:value="Salary (High to Low)"/>
                                     <String fx:value="Salary (Low to High)"/>
                                     <String fx:value="Experience (High to Low)"/>
+                                    <String fx:value="Experience (Low to High)"/>
                                     <String fx:value="Performance Rating"/>
                                 </FXCollections>
                             </items>
@@ -75,13 +79,6 @@
                 </VBox>
             </Tab>
 
-            <!-- Department Report Tab -->
-            <Tab text="Department Report">
-                <VBox spacing="10" style="-fx-padding: 10;">
-                    <TextArea fx:id="reportArea" editable="false" style="-fx-pref-height: 450px;"/>
-                    <Button text="Generate Report" onAction="#handleGenerateReport"/>
-                </VBox>
-            </Tab>
         </TabPane>
     </center>
 </BorderPane>

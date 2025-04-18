@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gtp.ems.ui.controller.EmployeeManagementController">
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #2c3e50;">
+            <Label text="Employee Management System" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-padding: 15px;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane>
+            <Tab text="Employee List">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <!-- Search Section -->
+                    <HBox spacing="10">
+                        <TextField fx:id="searchField" promptText="Search employees..." style="-fx-pref-width: 300px;"/>
+                        <Button text="Search" onAction="#handleSearch"/>
+                        <Button text="Clear" onAction="#handleClearSearch"/>
+                    </HBox>
+
+                    <!-- Filter and Sort Controls -->
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Filter By:"/>
+                        <ComboBox fx:id="filterComboBox" promptText="Select filter">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="All Employees"/>
+                                    <String fx:value="Active Only"/>
+                                    <String fx:value="Department"/>
+                                    <String fx:value="Salary Range"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <Label text="Sort By:"/>
+                        <ComboBox fx:id="sortComboBox" promptText="Select sort option">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Default"/>
+                                    <String fx:value="Salary (High to Low)"/>
+                                    <String fx:value="Salary (Low to High)"/>
+                                    <String fx:value="Experience (High to Low)"/>
+                                    <String fx:value="Performance Rating"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <Button text="Apply" onAction="#handleApplyFilters"/>
+                    </HBox>
+
+                    <!-- Employee Table -->
+                    <TableView fx:id="employeeTable" style="-fx-pref-height: 400px;">
+                        <columns>
+                            <TableColumn text="ID" fx:id="idColumn" prefWidth="150"/>
+                            <TableColumn text="Name" fx:id="nameColumn" prefWidth="150"/>
+                            <TableColumn text="Department" fx:id="deptColumn" prefWidth="100"/>
+                            <TableColumn text="Salary" fx:id="salaryColumn" prefWidth="100"/>
+                            <TableColumn text="Rating" fx:id="ratingColumn" prefWidth="80"/>
+                            <TableColumn text="Experience" fx:id="expColumn" prefWidth="80"/>
+                            <TableColumn text="Active" fx:id="activeColumn" prefWidth="60"/>
+                        </columns>
+                    </TableView>
+
+                    <!-- CRUD Operations -->
+                    <HBox spacing="10">
+                        <Button text="Add Employee" onAction="#handleAddEmployee"/>
+                        <Button text="Edit Employee" onAction="#handleEditEmployee"/>
+                        <Button text="Delete Employee" onAction="#handleDeleteEmployee"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- Department Report Tab -->
+            <Tab text="Department Report">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <TextArea fx:id="reportArea" editable="false" style="-fx-pref-height: 450px;"/>
+                    <Button text="Generate Report" onAction="#handleGenerateReport"/>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

@@ -12,19 +12,21 @@ public class Main {
         EmployeeManagementSystem<UUID> ems = new EmployeeManagementSystem<>();
         EmployeeInfoDisplay<UUID> display = new EmployeeInfoDisplay<>();
 
-
         ems.addEmployee(new Employee<>(
-                UUID.randomUUID(), "John Doe", "IT", 75000, 4.2, 5, true));
+                UUID.randomUUID(), "Patrick Appiah", "IT", 75000, 5.0, 5, true));
         ems.addEmployee(new Employee<>(
-                UUID.randomUUID(), "Jane Smith", "HR", 65000, 4.8, 8, true));
+                UUID.randomUUID(), "James Darkwa", "HR", 65000, 4.8, 8, true));
         ems.addEmployee(new Employee<>(
                 UUID.randomUUID(), "Bob Johnson", "Finance", 90000, 3.9, 10, true));
         ems.addEmployee(new Employee<>(
-                UUID.randomUUID(), "Alice Williams", "IT", 82000, 4.5, 3, true));
+                UUID.randomUUID(), "Spencer Dutton", "IT", 82000, 4.5, 3, true));
         ems.addEmployee(new Employee<>(
-                UUID.randomUUID(), "Charlie Brown", "Marketing", 58000, 4.1, 2, true));
+                UUID.randomUUID(), "Aaliyah", "Marketing", 58000, 4.1, 2, true));
         ems.addEmployee(new Employee<>(
-                UUID.randomUUID(), "Diana Prince", "IT", 110000, 4.9, 12, true));
+                UUID.randomUUID(), "Raymond Reddington", "IT", 110000, 4.9, 12, true));
+        ems.addEmployee(new Employee<>(
+                UUID.randomUUID(), "Kwa'appiah", "Operations", 140000, 4.0, 7, false));
+
 
         // Display all employees
         display.displayAllEmployees(ems.getAllEmployees());
@@ -36,8 +38,8 @@ public class Main {
         System.out.println("\nHigh Performing Employees (Rating >= 4.5):");
         display.displayEmployeesFormatted(ems.getHighPerformingEmployees(4.5));
 
-        System.out.println("\nEmployees with 'a' in their name:");
-        display.displayEmployeesFormatted(ems.searchEmployeesByName("a"));
+        System.out.println("\nEmployees with 'p' in their name:");
+        display.displayEmployeesFormatted(ems.searchEmployeesByName("p"));
 
         // Sorting examples
         System.out.println("\nEmployees Sorted by Experience:");
@@ -74,15 +76,13 @@ public class Main {
         System.out.println("\nAfter removing first employee:");
         display.displayAllEmployees(ems.getAllEmployees());
 
-        UUID employeeId = ems.getAllEmployees().getLast().getEmployeeId();
-
         UUID employeeId2 = UUID.randomUUID();
         try {
             Employee<UUID> employee = ems.getEmployee(employeeId2);
             System.out.println("\nAfter updating last employee:");
             System.out.println(employee);
         } catch (EmployeeNotExistException e) {
-            System.out.println(e.getMessage());
+            System.out.println("\n" + e.getMessage());
         }
     }
 }

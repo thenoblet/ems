@@ -14,12 +14,8 @@ public class EmployeeInfoDisplay<T> {
      */
     public void displayAllEmployees(Collection<Employee<T>> employees) {
         System.out.println("\nAll Employees:");
-        System.out.println("-----------------------------------------------------------------------------");
-        System.out.printf("%-10s %-20s %-10s %-10s %-5s %-5s %-6s%n",
-                "ID", "Name", "Department", "Salary", "Rating", "Exp", "Active");
-        System.out.println("-----------------------------------------------------------------------------");
-
-        employees.forEach(System.out::println);
+        printTableHeader();
+        employees.forEach(this::printEmployee);
     }
 
     /**
@@ -32,12 +28,32 @@ public class EmployeeInfoDisplay<T> {
             return;
         }
 
-        System.out.println("-----------------------------------------------------------------------------");
-        System.out.printf("%-10s %-20s %-10s %-10s %-5s %-5s %-6s%n",
-                "ID", "Name", "Department", "Salary", "Rating", "Exp", "Active");
-        System.out.println("-----------------------------------------------------------------------------");
+        printTableHeader();
+        employees.forEach(this::printEmployee);
+    }
 
-        employees.forEach(System.out::println);
+    /**
+     * Prints the table header with consistent column widths
+     */
+    private void printTableHeader() {
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-36s %-20s %-12s %-12s %-6s %-6s %-6s%n",
+                "ID", "Name", "Department", "Salary", "Rating", "Exp", "Active");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
+    }
+
+    /**
+     * Prints a single employee with consistent formatting
+     */
+    private void printEmployee(Employee<T> employee) {
+        System.out.printf("%-36s %-20s %-12s %-12s %-6.1f %-6d %-6s%n",
+                employee.getEmployeeId(),
+                employee.getName(),
+                employee.getDepartment(),
+                employee.getSalaryFormatted(),
+                employee.getPerformanceRating(),
+                employee.getYearsOfExperience(),
+                employee.isActive() ? "Yes" : "No");
     }
 
     /**

@@ -93,6 +93,9 @@ public class Employee<T> implements Comparable<Employee<T>> {
         return salary;
     }
 
+    public String getSalaryFormatted() {
+        return String.format("%.2f", this.salary);
+    }
     /**
      * Sets the employee's salary.
      *

@@ -202,7 +202,7 @@ classDiagram
 
 ### **3. JavaFX UI Preview**  
 ![UI Mockup](https://via.placeholder.com/600x400?text=JavaFX+Employee+Management+UI)  
-*(Replace with actual screenshot post-implementation)*  
+*(To be replaced with actual screenshot post-implementation)*  
 
 ---
 

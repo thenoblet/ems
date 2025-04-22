@@ -86,7 +86,7 @@ classDiagram
     %% Service Layer
     class EmployeeManagementSystem~T~ {
         <<Generic Class>>
-        -Map~T, Employee~T~~ employeeDatabase
+        -Map~T~, Employee~T~ employeeDatabase
         +addEmployee(Employee~T~) boolean
         +getEmployee(UUID) Employee~T~
         +removeEmployee(T) boolean

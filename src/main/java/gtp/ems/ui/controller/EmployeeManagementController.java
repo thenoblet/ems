@@ -73,7 +73,7 @@ public class EmployeeManagementController {
                 return new SimpleBooleanProperty(employee.isActive());
             });
 
-            activeColumn.setCellFactory(col -> new TableCell<Employee<UUID>, Boolean>() {
+            activeColumn.setCellFactory(col -> new TableCell<>() {
                 private final CheckBox checkBox = new CheckBox();
 
                 {
@@ -559,27 +559,66 @@ public class EmployeeManagementController {
      * @return the sorted list of employees
      */
     private List<Employee<UUID>> applySorting(String sortOption, List<Employee<UUID>> employees) {
-        if (sortOption == null) {
-            return employees;
-        }
+        LOGGER.entering(getClass().getSimpleName(), "applySorting",
+                new Object[]{sortOption, employees.size()});
 
-        return switch (sortOption) {
-            case "Salary (High to Low)" -> employees.stream()
-                    .sorted(Comparator.comparingDouble(Employee<UUID>::getSalary).reversed())
-                    .collect(Collectors.toList());
-            case "Salary (Low to High)" -> employees.stream()
-                    .sorted(Comparator.comparingDouble(Employee<UUID>::getSalary))
-                    .collect(Collectors.toList());
-            case "Experience (High to Low)" -> employees.stream()
-                    .sorted(Comparator.comparingInt(Employee<UUID>::getYearsOfExperience).reversed())
-                    .collect(Collectors.toList());
-            case "Experience (Low to High)" -> employees.stream()
-                    .sorted(Comparator.comparingInt(Employee<UUID>::getYearsOfExperience))
-                    .collect(Collectors.toList());
-            case "Performance Rating" -> employees.stream()
-                    .sorted(Comparator.comparingDouble(Employee<UUID>::getPerformanceRating).reversed())
-                    .collect(Collectors.toList());
-            default -> employees;
-        };
-    }
-}
+        try {
+            if (sortOption == null) {
+                LOGGER.fine("No sort option selected, returning original list");
+                return employees;
+            }
+
+            List<Employee<UUID>> sortedEmployees = switch (sortOption) {
+                case "Salary (High to Low)" -> {
+                    LOGGER.fine("Sorting by salary (high to low)");
+                    yield employees.stream()
+                            .sorted(Comparator.comparingDouble(Employee<UUID>::getSalary).reversed())
+                            .collect(Collectors.toList());
+                }
+                case "Salary (Low to High)" -> {
+                    LOGGER.fine("Sorting by salary (low to high)");
+                    yield employees.stream()
+                            .sorted(Comparator.comparingDouble(Employee<UUID>::getSalary))
+                            .collect(Collectors.toList());
+                }
+                case "Experience (High to Low)" -> {
+                    LOGGER.fine("Sorting by experience (high to low)");
+                    yield employees.stream()
+                            .sorted(Comparator.comparingInt(Employee<UUID>::getYearsOfExperience).reversed())
+                            .collect(Collectors.toList());
+                }
+                case "Experience (Low to High)" -> {
+                    LOGGER.fine("Sorting by experience (low to high)");
+                    yield employees.stream()
+                            .sorted(Comparator.comparingInt(Employee<UUID>::getYearsOfExperience))
+                            .collect(Collectors.toList());
+                }
+                case "Performance Rating" -> {
+                    LOGGER.fine("Sorting by performance rating");
+                    yield employees.stream()
+                            .sorted(Comparator.comparingDouble(Employee<UUID>::getPerformanceRating).reversed())
+                            .collect(Collectors.toList());
+                }
+                default -> {
+                    LOGGER.warning("Unknown sort option: " + sortOption);
+                    yield employees;
+                }
+            };
+
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.finest("Sorted employee IDs: " +
+                        sortedEmployees.stream()
+                                .map(Employee::getEmployeeId)
+                                .toList());
+            }
+
+            LOGGER.fine(() -> String.format(
+                    "Sorted %d employees by '%s'",
+                    sortedEmployees.size(),
+                    sortOption));
+
+            return sortedEmployees;
+        } finally {
+            LOGGER.exiting(getClass().getSimpleName(), "applySorting");
+        }
+    }}

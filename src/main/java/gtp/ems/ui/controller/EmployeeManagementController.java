@@ -21,6 +21,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
  * Handles all user interactions and manages the display of employee data.
  */
 public class EmployeeManagementController {
+    private static final Logger LOGGER = Logger.getLogger(EmployeeManagementController.class.getName());
+
     private final EmployeeManagementSystem<UUID> ems = new EmployeeManagementSystem<>();
     private final ObservableList<Employee<UUID>> employeeData = FXCollections.observableArrayList();
 
@@ -51,64 +55,80 @@ public class EmployeeManagementController {
      */
     @FXML
     public void initialize() {
-        // Set up table columns
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        deptColumn.setCellValueFactory(new PropertyValueFactory<>("department"));
-        salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
-        ratingColumn.setCellValueFactory(new PropertyValueFactory<>("performanceRating"));
-        expColumn.setCellValueFactory(new PropertyValueFactory<>("yearsOfExperience"));
+        LOGGER.entering(getClass().getSimpleName(), "initialize");
 
-        // Special handling for active status with checkbox
-        activeColumn.setCellValueFactory(cellData -> {
-            Employee<UUID> employee = cellData.getValue();
-            return new SimpleBooleanProperty(employee.isActive());
-        });
+        try {
+            // Set up table columns
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            deptColumn.setCellValueFactory(new PropertyValueFactory<>("department"));
+            salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
+            ratingColumn.setCellValueFactory(new PropertyValueFactory<>("performanceRating"));
+            expColumn.setCellValueFactory(new PropertyValueFactory<>("yearsOfExperience"));
+            LOGGER.fine("Configured table column value factories");
 
-        activeColumn.setCellValueFactory(cellData -> {
-            Employee<UUID> employee = cellData.getValue();
-            return new SimpleBooleanProperty(employee.isActive());
-        });
+            // Special handling for active status with checkbox
+            activeColumn.setCellValueFactory(cellData -> {
+                Employee<UUID> employee = cellData.getValue();
+                return new SimpleBooleanProperty(employee.isActive());
+            });
 
-        activeColumn.setCellFactory(col -> new TableCell<Employee<UUID>, Boolean>() {
-            private final CheckBox checkBox = new CheckBox();
+            activeColumn.setCellFactory(col -> new TableCell<Employee<UUID>, Boolean>() {
+                private final CheckBox checkBox = new CheckBox();
 
-            {
-                checkBox.setOnAction(e -> {
-                    Employee<UUID> employee = getTableRow().getItem();
-                    if (employee != null) {
-                        employee.setActive(checkBox.isSelected());
-                        ems.updateEmployeeDetails(employee.getEmployeeId(), "isActive", checkBox.isSelected());
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null);
-                } else {
-                    checkBox.setSelected(item);
-                    setGraphic(checkBox);
+                {
+                    checkBox.setOnAction(e -> {
+                        Employee<UUID> employee = getTableRow().getItem();
+                        if (employee != null) {
+                            employee.setActive(checkBox.isSelected());
+                            LOGGER.fine(() -> "Updated active status for employee: " + employee.getEmployeeId());
+                            ems.updateEmployeeDetails(employee.getEmployeeId(), "isActive", checkBox.isSelected());
+                        }
+                    });
                 }
-            }
-        });
 
-        // Load sample data
-        loadSampleData();
-        employeeTable.setItems(employeeData);
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        checkBox.setSelected(item);
+                        setGraphic(checkBox);
+                    }
+                }
+            });
+            LOGGER.fine("Configured active column cell factory");
+
+            // Load sample data
+            loadSampleData();
+            employeeTable.setItems(employeeData);
+            LOGGER.info("Initialized employee table with " + employeeData.size() + " employees");
+
+            LOGGER.exiting(getClass().getSimpleName(), "initialize");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error initializing employee management controller", e);
+            throw e;
+        }
     }
 
     /**
      * Loads all employees from the management system into the observable list.
      */
     private void loadSampleData() {
-        employeeData.clear();
-        employeeData.addAll(ems.getAllEmployees());
+        LOGGER.entering(getClass().getSimpleName(), "loadSampleData");
+        try {
+            employeeData.clear();
+            List<Employee<UUID>> employees = ems.getAllEmployees();
+            employeeData.addAll(employees);
+            LOGGER.fine(() -> "Loaded " + employees.size() + " employees into observable list");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to load sample employee data", e);
+            throw e;
+        } finally {
+            LOGGER.exiting(getClass().getSimpleName(), "loadSampleData");
+        }
     }
-
 
     /**
      * Handles the search action triggered by the search field.
@@ -116,22 +136,31 @@ public class EmployeeManagementController {
      */
     @FXML
     private void handleSearch() {
+        LOGGER.entering(getClass().getSimpleName(), "handleSearch");
         String searchTerm = searchField.getText().trim();
-        if (!searchTerm.isEmpty()) {
-            employeeData.clear();
-            employeeData.addAll(ems.searchEmployeesByName(searchTerm));
-        }
-    }
 
+        if (!searchTerm.isEmpty()) {
+            LOGGER.fine(() -> "Searching for employees with name containing: " + searchTerm);
+            employeeData.clear();
+            List<Employee<UUID>> results = ems.searchEmployeesByName(searchTerm);
+            employeeData.addAll(results);
+            LOGGER.info(() -> "Found " + results.size() + " employees matching search term");
+        } else {
+            LOGGER.warning("Empty search term provided");
+        }
+        LOGGER.exiting(getClass().getSimpleName(), "handleSearch");
+    }
     /**
      * Clears the current search and reloads all employees.
      */
     @FXML
     private void handleClearSearch() {
+        LOGGER.entering(getClass().getSimpleName(), "handleClearSearch");
         searchField.clear();
         loadSampleData();
+        LOGGER.info("Cleared search and reloaded all employees");
+        LOGGER.exiting(getClass().getSimpleName(), "handleClearSearch");
     }
-
     /**
      * Handles the "Add Employee" action.
      * Shows a dialog for entering new employee details and adds the employee
@@ -139,105 +168,121 @@ public class EmployeeManagementController {
      */
     @FXML
     private void handleAddEmployee() {
+        LOGGER.entering(getClass().getSimpleName(), "handleAddEmployee");
+
         // Create dialog for adding new employee
-        Dialog<Employee<UUID>> dialog = new Dialog<>();
-        dialog.setTitle("Add New Employee");
-        dialog.setResizable(true); // Allow manual resizing
-        dialog.getDialogPane().setPrefWidth(500);
+        try {
+            Dialog<Employee<UUID>> dialog = new Dialog<>();
+            dialog.setTitle("Add New Employee");
+            dialog.setResizable(true); // Allow manual resizing
+            dialog.getDialogPane().setPrefWidth(500);
 
-        // Set up dialog buttons
-        ButtonType addButton = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(addButton, ButtonType.CANCEL);
+            // Set up dialog buttons
+            ButtonType addButton = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(addButton, ButtonType.CANCEL);
 
-        // Create form
-        GridPane grid = new GridPane();
-        DialogUtils.configureGridLayout(grid);
+            // Create form
+            GridPane grid = new GridPane();
+            DialogUtils.configureGridLayout(grid);
 
-        grid.setHgap(10);
-        grid.setVgap(5);  // Reduced vertical gap for error labels
-        grid.setPadding(new Insets(20, 150, 10, 10));
+            grid.setHgap(10);
+            grid.setVgap(5);  // Reduced vertical gap for error labels
+            grid.setPadding(new Insets(20, 150, 10, 10));
 
-        // Form fields
-        TextField nameField = new TextField();
-        TextField deptField = new TextField();
-        TextField salaryField = new TextField();
-        TextField ratingField = new TextField();
-        TextField expField = new TextField();
-        CheckBox activeCheck = new CheckBox("Active");
+            // Form fields
+            TextField nameField = new TextField();
+            TextField deptField = new TextField();
+            TextField salaryField = new TextField();
+            TextField ratingField = new TextField();
+            TextField expField = new TextField();
+            CheckBox activeCheck = new CheckBox("Active");
 
-        // Error labels
-        Label nameError = DialogUtils.createErrorLabel();
-        Label deptError = DialogUtils.createErrorLabel();
-        Label salaryError = DialogUtils.createErrorLabel();
-        Label ratingError = DialogUtils.createErrorLabel();
-        Label expError = DialogUtils.createErrorLabel();
+            // Error labels
+            Label nameError = DialogUtils.createErrorLabel();
+            Label deptError = DialogUtils.createErrorLabel();
+            Label salaryError = DialogUtils.createErrorLabel();
+            Label ratingError = DialogUtils.createErrorLabel();
+            Label expError = DialogUtils.createErrorLabel();
 
-        // Add components to grid with error labels
-        grid.add(new Label("Name:"), 0, 0);
-        grid.add(nameField, 1, 0);
-        grid.add(nameError, 2, 0);
+            // Add components to grid with error labels
+            grid.add(new Label("Name:"), 0, 0);
+            grid.add(nameField, 1, 0);
+            grid.add(nameError, 2, 0);
 
-        grid.add(new Label("Department:"), 0, 1);
-        grid.add(deptField, 1, 1);
-        grid.add(deptError, 2, 1);
+            grid.add(new Label("Department:"), 0, 1);
+            grid.add(deptField, 1, 1);
+            grid.add(deptError, 2, 1);
 
-        grid.add(new Label("Salary:"), 0, 2);
-        grid.add(salaryField, 1, 2);
-        grid.add(salaryError, 2, 2);
+            grid.add(new Label("Salary:"), 0, 2);
+            grid.add(salaryField, 1, 2);
+            grid.add(salaryError, 2, 2);
 
-        grid.add(new Label("Rating:"), 0, 3);
-        grid.add(ratingField, 1, 3);
-        grid.add(ratingError, 2, 3);
+            grid.add(new Label("Rating:"), 0, 3);
+            grid.add(ratingField, 1, 3);
+            grid.add(ratingError, 2, 3);
 
-        grid.add(new Label("Experience:"), 0, 4);
-        grid.add(expField, 1, 4);
-        grid.add(expError, 2, 4);
+            grid.add(new Label("Experience:"), 0, 4);
+            grid.add(expField, 1, 4);
+            grid.add(expError, 2, 4);
 
-        grid.add(activeCheck, 1, 5);
+            grid.add(activeCheck, 1, 5);
 
-        dialog.getDialogPane().setContent(grid);
+            dialog.getDialogPane().setContent(grid);
 
-        // Get the Add button node to enable/disable it
-        Node addButtonNode = dialog.getDialogPane().lookupButton(addButton);
-        addButtonNode.setDisable(true);
+            // Get the Add button node to enable/disable it
+            Node addButtonNode = dialog.getDialogPane().lookupButton(addButton);
+            addButtonNode.setDisable(true);
 
-        DialogUtils.setupValidation(
-                nameField, nameError,
-                deptField, deptError,
-                salaryField, salaryError,
-                ratingField, ratingError,
-                expField, expError,
-                addButtonNode
-        );
+            DialogUtils.setupValidation(
+                    nameField, nameError,
+                    deptField, deptError,
+                    salaryField, salaryError,
+                    ratingField, ratingError,
+                    expField, expError,
+                    addButtonNode
+            );
 
-        Platform.runLater(nameField::requestFocus);
+            Platform.runLater(nameField::requestFocus);
 
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == addButton) {
-                try {
-                    return new Employee<>(
-                            UUID.randomUUID(),
-                            nameField.getText(),
-                            deptField.getText(),
-                            Double.parseDouble(salaryField.getText()),
-                            Double.parseDouble(ratingField.getText()),
-                            Integer.parseInt(expField.getText()),
-                            activeCheck.isSelected()
-                    );
-                } catch (NumberFormatException e) {
-                    showAlert("Invalid Input", "Please enter valid numbers for salary, rating and experience");
-                    return null;
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == addButton) {
+                    try {
+                        return new Employee<>(
+                                UUID.randomUUID(),
+                                nameField.getText(),
+                                deptField.getText(),
+                                Double.parseDouble(salaryField.getText()),
+                                Double.parseDouble(ratingField.getText()),
+                                Integer.parseInt(expField.getText()),
+                                activeCheck.isSelected()
+                        );
+                    } catch (NumberFormatException e) {
+                        showAlert("Invalid Input", "Please enter valid numbers for salary, rating and experience");
+                        return null;
+                    }
                 }
-            }
-            return null;
-        });
+                return null;
+            });
 
-        // Process the result
-        Optional<Employee<UUID>> result = dialog.showAndWait();
-        result.ifPresent(employee -> {
-            ems.addEmployee(employee);
-            loadSampleData();
-        });
+            // Process the result
+            Optional<Employee<UUID>> result = dialog.showAndWait();
+            result.ifPresent(employee -> {
+                ems.addEmployee(employee);
+                LOGGER.info(() -> "Added new employee: " + employee.getEmployeeId());
+                loadSampleData();
+            });
+
+            if (result.isEmpty()) {
+                LOGGER.fine("Add employee dialog was cancelled");
+            }
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error adding new employee", e);
+            throw e;
+        } finally {
+            LOGGER.exiting(getClass().getSimpleName(), "handleAddEmployee");
+        }
+
     }
 
     /**
@@ -246,115 +291,130 @@ public class EmployeeManagementController {
      */
     @FXML
     private void handleEditEmployee() {
+        LOGGER.entering(getClass().getSimpleName(), "handleEditEmployee");
+
         Employee<UUID> selected = employeeTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
+            LOGGER.warning("Edit attempted with no employee selected");
             showAlert("No Selection", "Please select an employee to edit");
             return;
         }
 
+        LOGGER.fine(() -> "Editing employee: " + selected.getEmployeeId());
+
         // Create dialog for editing employee
-        Dialog<Employee<UUID>> dialog = new Dialog<>();
-        dialog.setTitle("Edit Employee");
-        dialog.setResizable(true); // Allow manual resizing
-        dialog.getDialogPane().setPrefWidth(500);
+        try {
+            Dialog<Employee<UUID>> dialog = new Dialog<>();
+            dialog.setTitle("Edit Employee");
+            dialog.setResizable(true); // Allow manual resizing
+            dialog.getDialogPane().setPrefWidth(500);
 
-        // Set up dialog buttons
-        ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveButton, ButtonType.CANCEL);
+            // Set up dialog buttons
+            ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButton, ButtonType.CANCEL);
 
-        // Create form with current values
-        GridPane grid = new GridPane();
-        DialogUtils.configureGridLayout(grid);
-        grid.setHgap(10);
-        grid.setVgap(5);  // Reduced vertical gap for error labels
-        grid.setPadding(new Insets(20, 150, 10, 10));
+            // Create form with current values
+            GridPane grid = new GridPane();
+            DialogUtils.configureGridLayout(grid);
+            grid.setHgap(10);
+            grid.setVgap(5);  // Reduced vertical gap for error labels
+            grid.setPadding(new Insets(20, 150, 10, 10));
 
 
-        TextField nameField = new TextField(selected.getName());
-        TextField deptField = new TextField(selected.getDepartment());
-        TextField salaryField = new TextField(String.valueOf(selected.getSalary()));
-        TextField ratingField = new TextField(String.valueOf(selected.getPerformanceRating()));
-        TextField expField = new TextField(String.valueOf(selected.getYearsOfExperience()));
-        CheckBox activeCheck = new CheckBox("Active");
-        activeCheck.setSelected(selected.isActive());
+            TextField nameField = new TextField(selected.getName());
+            TextField deptField = new TextField(selected.getDepartment());
+            TextField salaryField = new TextField(String.valueOf(selected.getSalary()));
+            TextField ratingField = new TextField(String.valueOf(selected.getPerformanceRating()));
+            TextField expField = new TextField(String.valueOf(selected.getYearsOfExperience()));
+            CheckBox activeCheck = new CheckBox("Active");
+            activeCheck.setSelected(selected.isActive());
 
-        // Create error labels
-        Label nameError = DialogUtils.createErrorLabel();
-        Label deptError = DialogUtils.createErrorLabel();
-        Label salaryError = DialogUtils.createErrorLabel();
-        Label ratingError = DialogUtils.createErrorLabel();
-        Label expError = DialogUtils.createErrorLabel();
+            // Create error labels
+            Label nameError = DialogUtils.createErrorLabel();
+            Label deptError = DialogUtils.createErrorLabel();
+            Label salaryError = DialogUtils.createErrorLabel();
+            Label ratingError = DialogUtils.createErrorLabel();
+            Label expError = DialogUtils.createErrorLabel();
 
-        // Add components to grid with error labels
-        grid.add(new Label("Name:"), 0, 0);
-        grid.add(nameField, 1, 0);
-        grid.add(nameError, 2, 0);
+            // Add components to grid with error labels
+            grid.add(new Label("Name:"), 0, 0);
+            grid.add(nameField, 1, 0);
+            grid.add(nameError, 2, 0);
 
-        grid.add(new Label("Department:"), 0, 1);
-        grid.add(deptField, 1, 1);
-        grid.add(deptError, 2, 1);
+            grid.add(new Label("Department:"), 0, 1);
+            grid.add(deptField, 1, 1);
+            grid.add(deptError, 2, 1);
 
-        grid.add(new Label("Salary:"), 0, 2);
-        grid.add(salaryField, 1, 2);
-        grid.add(salaryError, 2, 2);
+            grid.add(new Label("Salary:"), 0, 2);
+            grid.add(salaryField, 1, 2);
+            grid.add(salaryError, 2, 2);
 
-        grid.add(new Label("Rating:"), 0, 3);
-        grid.add(ratingField, 1, 3);
-        grid.add(ratingError, 2, 3);
+            grid.add(new Label("Rating:"), 0, 3);
+            grid.add(ratingField, 1, 3);
+            grid.add(ratingError, 2, 3);
 
-        grid.add(new Label("Experience:"), 0, 4);
-        grid.add(expField, 1, 4);
-        grid.add(expError, 2, 4);
+            grid.add(new Label("Experience:"), 0, 4);
+            grid.add(expField, 1, 4);
+            grid.add(expError, 2, 4);
 
-        grid.add(activeCheck, 1, 5);
+            grid.add(activeCheck, 1, 5);
 
-        dialog.getDialogPane().setContent(grid);
+            dialog.getDialogPane().setContent(grid);
 
-        // Get the Save button node to enable/disable it
-        Node saveButtonNode = dialog.getDialogPane().lookupButton(saveButton);
-        saveButtonNode.setDisable(false); // Start enabled since we have valid initial values
+            // Get the Save button node to enable/disable it
+            Node saveButtonNode = dialog.getDialogPane().lookupButton(saveButton);
+            saveButtonNode.setDisable(false); // Start enabled since we have valid initial values
 
-        DialogUtils.setupValidation(
-                nameField, nameError,
-                deptField, deptError,
-                salaryField, salaryError,
-                ratingField, ratingError,
-                expField, expError,
-                saveButtonNode
-        );
+            DialogUtils.setupValidation(
+                    nameField, nameError,
+                    deptField, deptError,
+                    salaryField, salaryError,
+                    ratingField, ratingError,
+                    expField, expError,
+                    saveButtonNode
+            );
 
-        // Focus name field initially
-        Platform.runLater(nameField::requestFocus);
+            // Focus name field initially
+            Platform.runLater(nameField::requestFocus);
 
-        // Convert result to Employee when Save button is clicked
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == saveButton) {
-                try {
-                    selected.setName(nameField.getText());
-                    selected.setDepartment(deptField.getText());
-                    selected.setSalary(Double.parseDouble(salaryField.getText()));
-                    selected.setPerformanceRating(Double.parseDouble(ratingField.getText()));
-                    selected.setYearsOfExperience(Integer.parseInt(expField.getText()));
-                    selected.setActive(activeCheck.isSelected());
-                    return selected;
-                } catch (NumberFormatException e) {
-                    showAlert("Invalid Input", "Please enter valid numbers for salary, rating and experience");
-                    return null;
+            // Convert result to Employee when Save button is clicked
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == saveButton) {
+                    try {
+                        selected.setName(nameField.getText());
+                        selected.setDepartment(deptField.getText());
+                        selected.setSalary(Double.parseDouble(salaryField.getText()));
+                        selected.setPerformanceRating(Double.parseDouble(ratingField.getText()));
+                        selected.setYearsOfExperience(Integer.parseInt(expField.getText()));
+                        selected.setActive(activeCheck.isSelected());
+                        return selected;
+                    } catch (NumberFormatException e) {
+                        showAlert("Invalid Input", "Please enter valid numbers for salary, rating and experience");
+                        return null;
+                    }
                 }
-            }
-            return null;
-        });
+                return null;
+            });
 
-        // Process the result
-        dialog.showAndWait().ifPresent(employee -> {
-            ems.updateEmployeeDetails(employee.getEmployeeId(), "name", employee.getName());
-            ems.updateEmployeeDetails(employee.getEmployeeId(), "department", employee.getDepartment());
-            ems.updateEmployeeDetails(employee.getEmployeeId(), "salary", employee.getSalary());
-            ems.updateEmployeeDetails(employee.getEmployeeId(), "performanceRating", employee.getPerformanceRating());
-            ems.updateEmployeeDetails(employee.getEmployeeId(), "yearsOfExperience", employee.getYearsOfExperience());
-            ems.updateEmployeeDetails(employee.getEmployeeId(), "isActive", employee.isActive());
-            employeeTable.refresh();
-        });
+            // Process the result
+            dialog.showAndWait().ifPresent(employee -> {
+                ems.updateEmployeeDetails(employee.getEmployeeId(), "name", employee.getName());
+                ems.updateEmployeeDetails(employee.getEmployeeId(), "department", employee.getDepartment());
+                ems.updateEmployeeDetails(employee.getEmployeeId(), "salary", employee.getSalary());
+                ems.updateEmployeeDetails(employee.getEmployeeId(), "performanceRating", employee.getPerformanceRating());
+                ems.updateEmployeeDetails(employee.getEmployeeId(), "yearsOfExperience", employee.getYearsOfExperience());
+                ems.updateEmployeeDetails(employee.getEmployeeId(), "isActive", employee.isActive());
+
+                LOGGER.info(() -> "Updated details for employee: " + employee.getEmployeeId());
+
+                employeeTable.refresh();
+            });
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error editing employee", e);
+            throw e;
+        } finally {
+            LOGGER.exiting(getClass().getSimpleName(), "handleEditEmployee");
+        }
     }
 
     /**
@@ -363,11 +423,16 @@ public class EmployeeManagementController {
      */
     @FXML
     private void handleDeleteEmployee() {
+        LOGGER.entering(getClass().getSimpleName(), "handleDeleteEmployee");
+
         Employee<UUID> selected = employeeTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
+            LOGGER.warning("Delete attempted with no employee selected");
             showAlert("No Selection", "Please select an employee to delete");
             return;
         }
+
+        LOGGER.fine(() -> "Attempting to delete employee: " + selected.getEmployeeId());
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirm Deletion");
@@ -378,12 +443,18 @@ public class EmployeeManagementController {
             if (response == ButtonType.OK) {
                 try {
                     ems.removeEmployee(selected.getEmployeeId());
+                    employeeData.remove(selected);
+                    LOGGER.info(() -> "Deleted employee: " + selected.getEmployeeId());
                 } catch (EmployeeNotExistException e) {
+                    LOGGER.log(Level.SEVERE, "Failed to delete non-existent employee", e);
                     throw new RuntimeException(e);
                 }
-                employeeData.remove(selected);
+            } else {
+                LOGGER.fine("User cancelled employee deletion");
             }
         });
+
+        LOGGER.exiting(getClass().getSimpleName(), "handleDeleteEmployee");
     }
 
     /**
@@ -393,6 +464,8 @@ public class EmployeeManagementController {
      * @param message the alert content message
      */
     private void showAlert(String title, String message) {
+        LOGGER.warning(() -> "Showing alert: " + title + " - " + message);
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -421,16 +494,23 @@ public class EmployeeManagementController {
      * @return the filtered list of employees
      */
     private List<Employee<UUID>> applyFilters(String filterOption) {
+        LOGGER.entering(getClass().getSimpleName(), "applyFilters", filterOption);
+
         if (filterOption == null) {
             return ems.getAllEmployees();
         }
 
         return switch (filterOption) {
-            case "Active Only" -> ems.getAllEmployees().stream()
+            case "Active Only" -> {
+                LOGGER.fine("Applying 'Active Only' filter");
+
+                yield ems.getAllEmployees().stream()
                     .filter(Employee::isActive)
                     .collect(Collectors.toList());
+            }
             case "Department" -> {
-                // Show dialog to select department
+                LOGGER.fine("Applying 'Department' filter");
+
                 List<String> departments = ems.getAllEmployees().stream()
                         .map(Employee::getDepartment)
                         .distinct()
@@ -446,6 +526,8 @@ public class EmployeeManagementController {
                         .orElse(ems.getAllEmployees());
             }
             case "Salary Range" -> {
+                LOGGER.fine("Applying 'Salary Range' filter");
+
                 // Show dialog for salary range
                 TextInputDialog dialog = new TextInputDialog("1000-5000");
                 dialog.setTitle("Filter by Salary Range");

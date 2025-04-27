@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Controller for the welcome/splash screen of the Employee Management System.
@@ -18,6 +20,7 @@ import javafx.util.Duration;
  * </p>
  */
 public class WelcomeController {
+    private static final Logger LOGGER = Logger.getLogger(WelcomeController.class.getName());
 
     /**
      * The progress indicator that visually represents the loading progress.
@@ -46,24 +49,36 @@ public class WelcomeController {
      */
     @FXML
     public void initialize() {
-        // Initial loading phase (30% complete)
-        statusLabel.setText("Initialising EMS...");
-        progressIndicator.setProgress(0.3);
+        LOGGER.entering(getClass().getSimpleName(), "initialize");
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(1));
-        pause.setOnFinished(e -> {
-            progressIndicator.setProgress(0.6);
-            statusLabel.setText("Loading employee data...");
+        try {
+            // Initial loading phase (30% complete)
+            statusLabel.setText("Initialising EMS...");
+            progressIndicator.setProgress(0.3);
+            LOGGER.fine("Started initialization phase (30%)");
 
-            PauseTransition pause2 = new PauseTransition(Duration.seconds(1));
-            pause2.setOnFinished(e2 -> {
-                progressIndicator.setProgress(1.0);
-                statusLabel.setText("Ready!");
-                loadMainApplication(); // Transition to main application
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> {
+                progressIndicator.setProgress(0.6);
+                statusLabel.setText("Loading employee data...");
+                LOGGER.fine("Progressed to data loading phase (60%)");
+
+                PauseTransition pause2 = new PauseTransition(Duration.seconds(1));
+                pause2.setOnFinished(e2 -> {
+                    progressIndicator.setProgress(1.0);
+                    statusLabel.setText("Ready!");
+                    LOGGER.fine("Completed all loading phases (100%)");
+                    loadMainApplication(); // Transition to main application
+                });
+                pause2.play();
             });
-            pause2.play();
-        });
-        pause.play();
+            pause.play();
+
+            LOGGER.exiting(getClass().getSimpleName(), "initialize");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error during welcome screen initialization", e);
+            throw e;
+        }
     }
 
     /**
@@ -78,26 +93,36 @@ public class WelcomeController {
      * If an error occurs during loading, the stack trace is printed to standard error.
      */
     private void loadMainApplication() {
+        LOGGER.entering(getClass().getSimpleName(), "loadMainApplication");
+
         try {
             // Close the current welcome window
             Stage stage = (Stage) progressIndicator.getScene().getWindow();
             stage.close();
+            LOGGER.fine("Closed welcome screen stage");
 
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/ems/view/employee_management.fxml")
             );
+            LOGGER.config("Loading main application FXML from: /ems/view/employee_management.fxml");
 
             loader.setController(null);
 
             Scene scene = new Scene(loader.load(), 900, 600);
+            LOGGER.fine(() -> String.format("Created main scene with dimensions %dx%d",
+                    (int) scene.getWidth(), (int) scene.getHeight()));
 
             // Configure and show main application window
             Stage mainStage = new Stage();
             mainStage.setTitle("Employee Management System");
             mainStage.setScene(scene);
             mainStage.show();
+
+            LOGGER.info("Main application window displayed successfully");
+            LOGGER.exiting(getClass().getSimpleName(), "loadMainApplication");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to load main application", e);
+            throw new RuntimeException("Failed to load main application", e);
         }
     }
 }

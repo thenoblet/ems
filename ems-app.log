@@ -1,0 +1,208 @@
+Apr 27, 2025 3:07:40 PM gtp.ems.ui.controller.EmployeeManagementApp main
+CONFIG: Launching JavaFX application with args: []
+Apr 27, 2025 3:07:40 PM gtp.ems.ui.controller.EmployeeManagementApp start
+INFO: Starting Employee Management System application
+Apr 27, 2025 3:07:40 PM gtp.ems.ui.controller.EmployeeManagementApp start
+FINE: Loading FXML file for welcome view
+Apr 27, 2025 3:07:40 PM WelcomeController initialize
+FINER: ENTRY
+Apr 27, 2025 3:07:40 PM gtp.ems.ui.controller.WelcomeController initialize
+FINE: Started initialization phase (30%)
+Apr 27, 2025 3:07:40 PM WelcomeController initialize
+FINER: RETURN
+Apr 27, 2025 3:07:40 PM gtp.ems.ui.controller.EmployeeManagementApp start
+FINE: FXML file loaded successfully
+Apr 27, 2025 3:07:41 PM gtp.ems.ui.controller.EmployeeManagementApp start
+CONFIG: Created main scene with dimensions 800x600
+Apr 27, 2025 3:07:41 PM gtp.ems.ui.controller.EmployeeManagementApp start
+FINE: Preparing to show primary stage
+Apr 27, 2025 3:07:41 PM gtp.ems.ui.controller.EmployeeManagementApp lambda$start$2
+FINE: Primary stage shown
+Apr 27, 2025 3:07:41 PM gtp.ems.ui.controller.EmployeeManagementApp start
+INFO: Application started successfully in 423 ms
+Apr 27, 2025 3:07:41 PM gtp.ems.ui.controller.WelcomeController lambda$initialize$1
+FINE: Progressed to data loading phase (60%)
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.WelcomeController lambda$initialize$0
+FINE: Completed all loading phases (100%)
+Apr 27, 2025 3:07:43 PM WelcomeController loadMainApplication
+FINER: ENTRY
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.WelcomeController loadMainApplication
+FINE: Closed welcome screen stage
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.WelcomeController loadMainApplication
+CONFIG: Loading main application FXML from: /ems/view/employee_management.fxml
+Apr 27, 2025 3:07:43 PM EmployeeManagementController initialize
+FINER: ENTRY
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.EmployeeManagementController initialize
+FINE: Configured table column value factories
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.EmployeeManagementController initialize
+FINE: Configured active column cell factory
+Apr 27, 2025 3:07:43 PM EmployeeManagementController loadSampleData
+FINER: ENTRY
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.EmployeeManagementController loadSampleData
+FINE: Loaded 0 employees into observable list
+Apr 27, 2025 3:07:43 PM EmployeeManagementController loadSampleData
+FINER: RETURN
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.EmployeeManagementController initialize
+INFO: Initialized employee table with 0 employees
+Apr 27, 2025 3:07:43 PM EmployeeManagementController initialize
+FINER: RETURN
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.WelcomeController loadMainApplication
+FINE: Created main scene with dimensions 900x600
+Apr 27, 2025 3:07:43 PM gtp.ems.ui.controller.WelcomeController loadMainApplication
+INFO: Main application window displayed successfully
+Apr 27, 2025 3:07:43 PM WelcomeController loadMainApplication
+FINER: RETURN
+Apr 27, 2025 3:07:44 PM EmployeeManagementController handleAddEmployee
+FINER: ENTRY
+Apr 27, 2025 3:07:59 PM gtp.ems.ui.controller.EmployeeManagementController lambda$handleAddEmployee$7
+INFO: Added new employee: 060f72ab-c31c-4ed7-aa87-0698d5227e8b
+Apr 27, 2025 3:07:59 PM EmployeeManagementController loadSampleData
+FINER: ENTRY
+Apr 27, 2025 3:07:59 PM gtp.ems.ui.controller.EmployeeManagementController loadSampleData
+FINE: Loaded 1 employees into observable list
+Apr 27, 2025 3:07:59 PM EmployeeManagementController loadSampleData
+FINER: RETURN
+Apr 27, 2025 3:07:59 PM EmployeeManagementController handleAddEmployee
+FINER: RETURN
+Apr 27, 2025 3:08:04 PM EmployeeManagementController handleAddEmployee
+FINER: ENTRY
+Apr 27, 2025 3:08:22 PM gtp.ems.ui.controller.EmployeeManagementController lambda$handleAddEmployee$7
+INFO: Added new employee: 36174457-3b53-46b7-8c17-f6d99d094a5c
+Apr 27, 2025 3:08:22 PM EmployeeManagementController loadSampleData
+FINER: ENTRY
+Apr 27, 2025 3:08:22 PM gtp.ems.ui.controller.EmployeeManagementController loadSampleData
+FINE: Loaded 2 employees into observable list
+Apr 27, 2025 3:08:22 PM EmployeeManagementController loadSampleData
+FINER: RETURN
+Apr 27, 2025 3:08:22 PM EmployeeManagementController handleAddEmployee
+FINER: RETURN
+Apr 27, 2025 3:08:32 PM EmployeeManagementController handleAddEmployee
+FINER: ENTRY
+Apr 27, 2025 3:08:49 PM gtp.ems.ui.controller.EmployeeManagementController lambda$handleAddEmployee$7
+INFO: Added new employee: 3bee2637-95d2-4c05-9698-4c5a1f502e25
+Apr 27, 2025 3:08:49 PM EmployeeManagementController loadSampleData
+FINER: ENTRY
+Apr 27, 2025 3:08:49 PM gtp.ems.ui.controller.EmployeeManagementController loadSampleData
+FINE: Loaded 3 employees into observable list
+Apr 27, 2025 3:08:49 PM EmployeeManagementController loadSampleData
+FINER: RETURN
+Apr 27, 2025 3:08:49 PM EmployeeManagementController handleAddEmployee
+FINER: RETURN
+Apr 27, 2025 3:08:58 PM EmployeeManagementController applyFilters
+FINER: ENTRY Active Only
+Apr 27, 2025 3:08:58 PM gtp.ems.ui.controller.EmployeeManagementController applyFilters
+FINE: Applying 'Active Only' filter
+Apr 27, 2025 3:08:58 PM EmployeeManagementController applySorting
+FINER: ENTRY null 2
+Apr 27, 2025 3:08:58 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: No sort option selected, returning original list
+Apr 27, 2025 3:08:58 PM EmployeeManagementController applySorting
+FINER: RETURN
+Apr 27, 2025 3:09:23 PM EmployeeManagementController applyFilters
+FINER: ENTRY Active Only
+Apr 27, 2025 3:09:23 PM gtp.ems.ui.controller.EmployeeManagementController applyFilters
+FINE: Applying 'Active Only' filter
+Apr 27, 2025 3:09:23 PM EmployeeManagementController applySorting
+FINER: ENTRY Salary (High to Low) 2
+Apr 27, 2025 3:09:23 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorting by salary (high to low)
+Apr 27, 2025 3:09:23 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINEST: Sorted employee IDs: [060f72ab-c31c-4ed7-aa87-0698d5227e8b, 36174457-3b53-46b7-8c17-f6d99d094a5c]
+Apr 27, 2025 3:09:23 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorted 2 employees by 'Salary (High to Low)'
+Apr 27, 2025 3:09:23 PM EmployeeManagementController applySorting
+FINER: RETURN
+Apr 27, 2025 3:09:36 PM EmployeeManagementController applyFilters
+FINER: ENTRY Department
+Apr 27, 2025 3:09:36 PM gtp.ems.ui.controller.EmployeeManagementController applyFilters
+FINE: Applying 'Department' filter
+Apr 27, 2025 3:09:39 PM EmployeeManagementController applySorting
+FINER: ENTRY Salary (High to Low) 1
+Apr 27, 2025 3:09:39 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorting by salary (high to low)
+Apr 27, 2025 3:09:39 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINEST: Sorted employee IDs: [060f72ab-c31c-4ed7-aa87-0698d5227e8b]
+Apr 27, 2025 3:09:39 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorted 1 employees by 'Salary (High to Low)'
+Apr 27, 2025 3:09:39 PM EmployeeManagementController applySorting
+FINER: RETURN
+Apr 27, 2025 3:09:51 PM EmployeeManagementController applyFilters
+FINER: ENTRY Department
+Apr 27, 2025 3:09:51 PM gtp.ems.ui.controller.EmployeeManagementController applyFilters
+FINE: Applying 'Department' filter
+Apr 27, 2025 3:09:52 PM EmployeeManagementController applySorting
+FINER: ENTRY Default 1
+Apr 27, 2025 3:09:52 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+WARNING: Unknown sort option: Default
+Apr 27, 2025 3:09:52 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINEST: Sorted employee IDs: [060f72ab-c31c-4ed7-aa87-0698d5227e8b]
+Apr 27, 2025 3:09:52 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorted 1 employees by 'Default'
+Apr 27, 2025 3:09:52 PM EmployeeManagementController applySorting
+FINER: RETURN
+Apr 27, 2025 3:10:27 PM EmployeeManagementController applyFilters
+FINER: ENTRY Salary Range
+Apr 27, 2025 3:10:27 PM gtp.ems.ui.controller.EmployeeManagementController applyFilters
+FINE: Applying 'Salary Range' filter
+Apr 27, 2025 3:10:28 PM EmployeeManagementController applySorting
+FINER: ENTRY Default 2
+Apr 27, 2025 3:10:28 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+WARNING: Unknown sort option: Default
+Apr 27, 2025 3:10:28 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINEST: Sorted employee IDs: [3bee2637-95d2-4c05-9698-4c5a1f502e25, 36174457-3b53-46b7-8c17-f6d99d094a5c]
+Apr 27, 2025 3:10:28 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorted 2 employees by 'Default'
+Apr 27, 2025 3:10:28 PM EmployeeManagementController applySorting
+FINER: RETURN
+Apr 27, 2025 3:10:36 PM EmployeeManagementController applyFilters
+FINER: ENTRY Salary Range
+Apr 27, 2025 3:10:36 PM gtp.ems.ui.controller.EmployeeManagementController applyFilters
+FINE: Applying 'Salary Range' filter
+Apr 27, 2025 3:10:37 PM EmployeeManagementController applySorting
+FINER: ENTRY Salary (High to Low) 2
+Apr 27, 2025 3:10:37 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorting by salary (high to low)
+Apr 27, 2025 3:10:37 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINEST: Sorted employee IDs: [3bee2637-95d2-4c05-9698-4c5a1f502e25, 36174457-3b53-46b7-8c17-f6d99d094a5c]
+Apr 27, 2025 3:10:37 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorted 2 employees by 'Salary (High to Low)'
+Apr 27, 2025 3:10:37 PM EmployeeManagementController applySorting
+FINER: RETURN
+Apr 27, 2025 3:10:44 PM EmployeeManagementController handleEditEmployee
+FINER: ENTRY
+Apr 27, 2025 3:10:44 PM gtp.ems.ui.controller.EmployeeManagementController handleEditEmployee
+FINE: Editing employee: 36174457-3b53-46b7-8c17-f6d99d094a5c
+Apr 27, 2025 3:10:54 PM gtp.ems.ui.controller.EmployeeManagementController lambda$handleEditEmployee$11
+INFO: Updated details for employee: 36174457-3b53-46b7-8c17-f6d99d094a5c
+Apr 27, 2025 3:10:54 PM EmployeeManagementController handleEditEmployee
+FINER: RETURN
+Apr 27, 2025 3:11:10 PM EmployeeManagementController handleDeleteEmployee
+FINER: ENTRY
+Apr 27, 2025 3:11:10 PM gtp.ems.ui.controller.EmployeeManagementController handleDeleteEmployee
+FINE: Attempting to delete employee: 36174457-3b53-46b7-8c17-f6d99d094a5c
+Apr 27, 2025 3:11:14 PM gtp.ems.ui.controller.EmployeeManagementController lambda$handleDeleteEmployee$14
+INFO: Deleted employee: 36174457-3b53-46b7-8c17-f6d99d094a5c
+Apr 27, 2025 3:11:14 PM EmployeeManagementController handleDeleteEmployee
+FINER: RETURN
+Apr 27, 2025 3:11:24 PM EmployeeManagementController applyFilters
+FINER: ENTRY All Employees
+Apr 27, 2025 3:11:24 PM EmployeeManagementController applySorting
+FINER: ENTRY Default 2
+Apr 27, 2025 3:11:24 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+WARNING: Unknown sort option: Default
+Apr 27, 2025 3:11:24 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINEST: Sorted employee IDs: [060f72ab-c31c-4ed7-aa87-0698d5227e8b, 3bee2637-95d2-4c05-9698-4c5a1f502e25]
+Apr 27, 2025 3:11:24 PM gtp.ems.ui.controller.EmployeeManagementController applySorting
+FINE: Sorted 2 employees by 'Default'
+Apr 27, 2025 3:11:24 PM EmployeeManagementController applySorting
+FINER: RETURN
+Apr 27, 2025 3:11:32 PM gtp.ems.ui.controller.EmployeeManagementController$1 lambda$new$1
+FINE: Updated active status for employee: 3bee2637-95d2-4c05-9698-4c5a1f502e25
+Apr 27, 2025 3:11:37 PM gtp.ems.ui.controller.EmployeeManagementController$1 lambda$new$1
+FINE: Updated active status for employee: 3bee2637-95d2-4c05-9698-4c5a1f502e25
+Apr 27, 2025 3:11:38 PM gtp.ems.ui.controller.EmployeeManagementController$1 lambda$new$1
+FINE: Updated active status for employee: 060f72ab-c31c-4ed7-aa87-0698d5227e8b
+Apr 27, 2025 3:11:40 PM gtp.ems.ui.controller.EmployeeManagementController$1 lambda$new$1
+FINE: Updated active status for employee: 060f72ab-c31c-4ed7-aa87-0698d5227e8b
+Apr 27, 2025 3:11:40 PM gtp.ems.ui.controller.EmployeeManagementController$1 lambda$new$1
+FINE: Updated active status for employee: 3bee2637-95d2-4c05-9698-4c5a1f502e25

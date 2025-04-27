@@ -1,5 +1,6 @@
 package gtp.ems.ui.controller;
 
+import gtp.ems.exception.EmployeeNotExistException;
 import gtp.ems.model.Employee;
 import gtp.ems.service.EmployeeManagementSystem;
 import gtp.ems.ui.util.DialogUtils;
@@ -238,7 +239,6 @@ public class EmployeeManagementController {
             loadSampleData();
         });
     }
-
 
     /**
      * Handles the "Edit Employee" action.

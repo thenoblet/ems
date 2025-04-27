@@ -1,5 +1,6 @@
 package gtp.ems.ui.controller;
 
+import gtp.ems.exception.EmployeeNotExistException;
 import gtp.ems.model.Employee;
 import gtp.ems.service.EmployeeManagementSystem;
 import gtp.ems.ui.util.DialogUtils;
@@ -376,7 +377,11 @@ public class EmployeeManagementController {
 
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                ems.removeEmployee(selected.getEmployeeId());
+                try {
+                    ems.removeEmployee(selected.getEmployeeId());
+                } catch (EmployeeNotExistException e) {
+                    throw new RuntimeException(e);
+                }
                 employeeData.remove(selected);
             }
         });

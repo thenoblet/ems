@@ -86,7 +86,7 @@ classDiagram
     %% Service Layer
     class EmployeeManagementSystem~T~ {
         <<Generic Class>>
-        -Map~T, Employee~T~~ employeeDatabase
+        -Map~T~, Employee~T~ employeeDatabase
         +addEmployee(Employee~T~) boolean
         +getEmployee(UUID) Employee~T~
         +removeEmployee(T) boolean
@@ -202,7 +202,7 @@ classDiagram
 
 ### **3. JavaFX UI Preview**  
 ![UI Mockup](https://via.placeholder.com/600x400?text=JavaFX+Employee+Management+UI)  
-*(Replace with actual screenshot post-implementation)*  
+*(To be replaced with actual screenshot post-implementation)*  
 
 ---
 

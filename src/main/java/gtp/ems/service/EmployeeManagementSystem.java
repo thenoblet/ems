@@ -35,11 +35,11 @@ public class EmployeeManagementSystem<T> {
         return true;
     }
 
-    public Employee<T> getEmployee(UUID employeeId) throws EmployeeNotExistException {
+    public Employee<T> getEmployee(T employeeId) throws EmployeeNotExistException {
         Employee<T> employee = employeeDatabase.get(employeeId);
 
         if (employee == null) {
-            throw new EmployeeNotExistException(employeeId);
+            throw new EmployeeNotExistException((UUID) employeeId);
         }
 
         return employee;
@@ -49,10 +49,11 @@ public class EmployeeManagementSystem<T> {
      * Removes an employee from the system.
      *
      * @param employeeId the ID of the employee to remove
-     * @return true if the employee was found and removed, false otherwise
      */
-    public boolean removeEmployee(T employeeId) {
-        return employeeDatabase.remove(employeeId) != null;
+    public void removeEmployee(UUID employeeId) throws EmployeeNotExistException {
+        if (employeeDatabase.remove(employeeId) == null) {
+            throw new EmployeeNotExistException(employeeId, "No employee with id " + employeeId);
+        }
     }
 
     /**
@@ -65,7 +66,7 @@ public class EmployeeManagementSystem<T> {
      *         or the field/newValue combination was invalid
      * @throws ClassCastException if the newValue type doesn't match the field type
      */
-    public boolean updateEmployeeDetails(T employeeId, String field, Object newValue) {
+    public boolean updateEmployeeDetails(UUID employeeId, String field, Object newValue) {
         Employee<T> employee = employeeDatabase.get(employeeId);
         if (employee == null) {
             return false;

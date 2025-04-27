@@ -57,7 +57,6 @@ public class EmployeeManagementApp extends Application {
             alert.setContentText("The application could not start. Please check the logs.");
             alert.showAndWait();
         } catch (Exception e) {
-            // Fallback if JavaFX fails completely
             System.err.println("Could not even show error dialog!");
         }
     }

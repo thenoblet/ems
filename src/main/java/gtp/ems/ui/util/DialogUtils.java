@@ -1,5 +1,7 @@
 package gtp.ems.ui.util;
 
+import gtp.ems.exception.InvalidSalaryException;
+
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -131,18 +133,27 @@ public class DialogUtils {
     }
 
     /**
-     * Validates if a string can be parsed as a double.
+     * Validates if a string can be parsed as a double and if the input salary
+     * is negative.
      *
      * @param input The string to validate
-     * @return true if the input is a valid double, false otherwise
+     * @return true if the input is a valid double and not negative, false otherwise
      */
     private static boolean isValidDouble(String input) {
         try {
             if (input == null || input.trim().isEmpty()) {
                 return false;
             }
-            Double.parseDouble(input.trim());
+
+            double value = Double.parseDouble(input.trim());
+
+            if (value <= 0) {
+                throw new InvalidSalaryException(input);
+            }
+
             return true;
+        } catch (InvalidSalaryException e) {
+            return false;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -159,8 +170,10 @@ public class DialogUtils {
             if (input == null || input.trim().isEmpty()) {
                 return false;
             }
-            Integer.parseInt(input.trim());
-            return true;
+
+            int value = Integer.parseInt(input.trim());
+            return value > 0;
+
         } catch (NumberFormatException e) {
             return false;
         }

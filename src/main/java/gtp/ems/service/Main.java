@@ -1,9 +1,7 @@
-package gtp.ems.test;
+package gtp.ems.service;
 
 import gtp.ems.exception.EmployeeNotExistException;
 import gtp.ems.model.Employee;
-import gtp.ems.service.EmployeeInfoDisplay;
-import gtp.ems.service.EmployeeManagementSystem;
 
 import java.util.UUID;
 
@@ -91,5 +89,10 @@ public class Main {
         } catch (EmployeeNotExistException e) {
             System.out.println("\n" + e.getMessage());
         }
+
+        // Update the wrong employee
+        System.out.println("\nUpdating wrong employee:");
+        UUID employeeId3 = UUID.randomUUID();
+        ems.updateEmployeeDetails(employeeId3, "salary", 80000.0);
     }
 }

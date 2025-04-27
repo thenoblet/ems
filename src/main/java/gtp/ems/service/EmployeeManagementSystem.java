@@ -232,7 +232,7 @@ public class EmployeeManagementSystem<T> {
         employeeDatabase.values().stream()
                 .filter(employee -> employee.getPerformanceRating() >= minRating)
                 .forEach(employee -> {
-                    double newSalary = employee.getSalary() * (1 + raisePercentage / 100);
+                    double newSalary = employee.getSalary() * (raisePercentage / 100);
                     employee.setSalary(newSalary);
                 });
     }

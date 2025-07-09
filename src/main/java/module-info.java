@@ -5,7 +5,6 @@ module gtp.ems {
     requires org.controlsfx.controls;
     requires java.logging;
 
-    //opens gtp.ems to javafx.fxml;
     opens gtp.ems.ui.controller to javafx.fxml;
 
     exports gtp.ems.ui.controller;

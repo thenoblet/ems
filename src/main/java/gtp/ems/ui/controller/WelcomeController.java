@@ -55,9 +55,9 @@ public class WelcomeController {
             // Initial loading phase (30% complete)
             statusLabel.setText("Initialising EMS...");
             progressIndicator.setProgress(0.3);
-            LOGGER.fine("Started initialization phase (30%)");
+            LOGGER.fine("Started initialisation phase (30%)");
 
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
             pause.setOnFinished(e -> {
                 progressIndicator.setProgress(0.6);
                 statusLabel.setText("Loading employee data...");

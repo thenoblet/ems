@@ -111,7 +111,8 @@ public class DialogUtils {
         // Add focus listeners to track first interaction
         Consumer<TextField> trackInteraction = field -> {
             field.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-                if (wasFocused && !isNowFocused) validateInput.run();
+                if (wasFocused && !isNowFocused)
+                    validateInput.run();
             });
         };
 

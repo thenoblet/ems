@@ -21,7 +21,7 @@ public class EmployeeManagementApp extends Application {
 
     private static final Logger LOGGER = Logger.getLogger(EmployeeManagementApp.class.getName());
     private static final int MAX_LOG_FILES = 5;
-    private static final int MAX_LOG_SIZE = 5 * 1024 * 1024; // 5 MB
+    private static final int MAX_LOG_SIZE = 5 * 1024 * 1024;
 
     static {
         configureLogging();
@@ -52,6 +52,7 @@ public class EmployeeManagementApp extends Application {
 
         } catch (IOException e) {
             System.err.println("Failed to configure logging: " + e.getMessage());
+            
         }
     }
 

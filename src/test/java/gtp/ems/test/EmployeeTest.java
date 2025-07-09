@@ -10,12 +10,25 @@ import gtp.ems.model.Employee;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+/**
+ * A test class for verifying the functionality of the {@link gtp.ems.model.Employee} class.
+ * This class contains unit tests for various aspects of the Employee class including
+ * construction, getters, setters, comparison, equality, and string representation.
+ *
+ * The tests cover both typical usage scenarios and edge cases to ensure robustness.
+ *
+ * @see gtp.ems.model.Employee
+ */
 @DisplayName("Employee Tests")
 class EmployeeTest {
 
     private Employee<String> activeEmployee;
     private Employee<Integer> inactiveEmployee;
 
+    /**
+     * Sets up test fixtures before each test method execution.
+     * Initialises two Employee instances with different ID types and statuses.
+     */
     @BeforeEach
     void setUp() {
         activeEmployee = new Employee<>("EMP001", "Patrick", "Engineering",
@@ -24,9 +37,14 @@ class EmployeeTest {
                 65000.0, 3.8, 3, false);
     }
 
+    /**
+     * Tests the constructor and getter methods of the Employee class.
+     * Verifies that all fields are properly initialized and accessible.
+     */
     @Test
     @DisplayName("Test Constructor and Getters")
     void testConstructorAndGetters() {
+        // Test cases for activeEmployee
         assertEquals("EMP001", activeEmployee.getEmployeeId());
         assertEquals("Patrick", activeEmployee.getName());
         assertEquals("Engineering", activeEmployee.getDepartment());
@@ -35,6 +53,7 @@ class EmployeeTest {
         assertEquals(5, activeEmployee.getYearsOfExperience());
         assertTrue(activeEmployee.isActive());
 
+        // Test cases for inactiveEmployee
         assertEquals(1001, inactiveEmployee.getEmployeeId());
         assertEquals("Elias", inactiveEmployee.getName());
         assertEquals("HR", inactiveEmployee.getDepartment());
@@ -44,6 +63,10 @@ class EmployeeTest {
         assertFalse(inactiveEmployee.isActive());
     }
 
+    /**
+     * Tests the setter methods of the Employee class.
+     * Verifies that all mutable fields can be properly updated.
+     */
     @Test
     @DisplayName("Test Setters")
     void testSetters() {
@@ -62,6 +85,10 @@ class EmployeeTest {
         assertFalse(activeEmployee.isActive());
     }
 
+    /**
+     * Tests the formatted salary output.
+     * Verifies that salary values are properly formatted with two decimal places.
+     */
     @Test
     @DisplayName("Test getSalaryFormatted")
     void testGetSalaryFormatted() {
@@ -72,6 +99,10 @@ class EmployeeTest {
         assertEquals("123456.79", activeEmployee.getSalaryFormatted());
     }
 
+    /**
+     * Tests the comparison functionality between Employee instances.
+     * Verifies that employees are compared based on years of experience in descending order.
+     */
     @Test
     @DisplayName("Test compareTo - sorting by years of experience (descending)")
     void testCompareTo() {
@@ -86,6 +117,10 @@ class EmployeeTest {
                 new Employee<>("EMP004", "Oluchi", "IT", 60000.0, 3.5, 5, true)));
     }
 
+    /**
+     * Tests the equals and hashCode methods.
+     * Verifies that equality is based solely on employee ID and that hashCode is consistent with equals.
+     */
     @Test
     @DisplayName("Test equals and hashCode")
     void testEqualsAndHashCode() {
@@ -104,6 +139,18 @@ class EmployeeTest {
         assertNotEquals("Not an Employee", activeEmployee);
     }
 
+    /**
+     * Parameterized test for the toString method.
+     * Verifies that the string representation of employees follows the expected format.
+     *
+     * @param id The employee ID
+     * @param name The employee name
+     * @param dept The department name
+     * @param salary The salary value
+     * @param rating The performance rating
+     * @param exp The years of experience
+     * @param active The active status ("Yes" or "No")
+     */
     @ParameterizedTest
     @CsvSource({
             "EMP001, Patrick, Engineering, 75000.00, 4.5, 5, Yes",
@@ -119,6 +166,12 @@ class EmployeeTest {
         assertEquals(expected, employee.toString());
     }
 
+    /**
+     * Parameterized test for performance rating boundaries.
+     * Verifies that the performance rating can be set to various valid values.
+     *
+     * @param rating The performance rating value to test
+     */
     @ParameterizedTest
     @ValueSource(doubles = {0.0, 2.5, 5.0, 3.14159})
     @DisplayName("Test performance rating boundary values")
@@ -127,6 +180,10 @@ class EmployeeTest {
         assertEquals(rating, activeEmployee.getPerformanceRating());
     }
 
+    /**
+     * Tests the Employee class with different ID types.
+     * Verifies that both String and Integer ID types work correctly.
+     */
     @Test
     @DisplayName("Test employee with different ID types")
     void testDifferentIdTypes() {
@@ -139,6 +196,10 @@ class EmployeeTest {
         assertEquals("ABC123", stringIdEmployee.getEmployeeId());
     }
 
+    /**
+     * Tests edge cases for salary values.
+     * Verifies handling of zero salary and rounding of large values.
+     */
     @Test
     @DisplayName("Test edge cases for salary")
     void testSalaryEdgeCases() {
